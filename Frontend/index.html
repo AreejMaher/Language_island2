@@ -39,39 +39,42 @@
 </div>
 
 <!-- =========================================================
-   HEADER
+   HEADER - Common for all pages (UPDATED)
    ========================================================= -->
 <header class="topbar">
   <div class="topbar-top">
-    <div class="brand">
-      <span class="brand-logo"><img src="imgs/Cattoimages/cattologo.png" alt="Language Island" onerror="this.parentElement.style.display='none'"></span>
+    <div class="topbar-left">
+      <!-- FIX: was <img class="brand-logo" ...> directly, with no
+           wrapper. header.css's ".brand-logo img" rule (12rem,
+           object-fit:contain) only applies to an <img> INSIDE a
+           .brand-logo wrapper, matching games.html's structure —
+           it never matched here, so the logo rendered squashed
+           into the 60x70 box with default (stretched) object-fit
+           instead of the intended clipped/contained look. -->
+      <div class="brand interactive" id="brandLogo">
+        <span class="brand-logo"><img src="imgs/Cattoimages/cattologo.png" id="siteLogo" alt="Language Island Logo"></span>
+      </div>
     </div>
     <div class="topbar-right">
       <!-- Coins Display -->
-      <div class="progress-pill coins-display">
+      <div class="progress-pill coins-display" style="display:none;">
         <span class="progress-icon">🪙</span>
         <span id="headerCoins">0</span>
       </div>
-      
       <!-- Stars Display -->
-      <div class="progress-pill stars-display">
+      <div class="progress-pill stars-display" style="display:none;">
         <span class="progress-icon">⭐</span>
         <span id="headerStars">0</span>
       </div>
-      
       <!-- Auth Buttons -->
       <div class="auth-buttons" id="authButtons">
         <a href="signin.html" class="auth-btn login interactive">Sign In</a>
         <a href="signup.html" class="auth-btn signup interactive">Sign Up</a>
       </div>
-      
       <!-- User Menu -->
-      <div class="user-menu-wrapper" id="userMenuWrapper">
-        <!-- The display:none is securely on the button itself now -->
-        <button class="menu-toggle interactive" id="menuToggle" aria-label="Open account menu" style="display:none;">
-          <div class="user-avatar-icon" id="userAvatarIcon">
-            <i class="fas fa-user"></i>
-          </div>
+      <div class="user-menu-wrapper" id="userMenuWrapper" style="display:none;">
+        <button class="menu-toggle interactive" id="menuToggle" aria-label="Open account menu">
+          <img src="imgs/Cattoimages/default-catto.png" alt="User" class="user-avatar-icon" id="userAvatarIcon">
         </button>
       </div>
     </div>
@@ -87,7 +90,7 @@
     <a class="nav-btn" href="shop.html"><span class="nav-icon"><i class="fas fa-store"></i></span>Shop</a>
   </nav>
   
-  <!-- Language Flags Navbar -->
+  <!-- Language Flags Navbar - Small -->
   <nav class="lang-navbar" aria-label="Languages">
     <button class="lang-nav-btn active" data-lang="en" title="English">
       <span class="fi fi-gb"></span>
@@ -117,7 +120,7 @@
 </header>
 
 <!-- =========================================================
-   SIDEBAR
+   SIDEBAR - FIXED (UPDATED ORDER)
    ========================================================= -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 <div class="sidebar" id="sidebar">
@@ -128,22 +131,26 @@
   <!-- Profile Section -->
   <div class="sidebar-profile">
     <div class="sidebar-avatar-wrapper">
-      <div class="sidebar-avatar-bg">
-        <img src="imgs/Cattoimages/cattologo.png" alt="Avatar" id="sidebarAvatarImg" style="width:100%; border-radius:50%;">
-      </div>
+      <img id="sidebarUserImage" src="imgs/Cattoimages/default-catto.png" alt="User Avatar">
     </div>
     <div class="sidebar-username" id="sidebarUsername">Explorer</div>
     <div class="sidebar-user-email" id="sidebarEmail">explorer@languageisland.com</div>
   </div>
   
-  <!-- Menu Items -->
+  <!-- Menu Items - NEW ORDER -->
   <ul class="sidebar-menu">
-    <li><a href="dashboard.html" id="menuDashboard"><i class="fas fa-chart-simple"></i> Dashboard</a></li>
-    <li><a href="shop.html" id="menuShop"><i class="fas fa-store"></i> Shop</a></li>
-    <li><a href="achievements.html" id="menuAchievements"><i class="fas fa-trophy"></i> Achievements</a></li>
+    <!-- 1. My Profile -->
     <li><a href="profile.html" id="menuProfile"><i class="fas fa-user"></i> My Profile</a></li>
+    <!-- 2. Dashboard (Home) -->
+    <li><a href="index.html" id="menuDashboard"><i class="fas fa-chart-simple"></i> Dashboard</a></li>
+    <!-- 3. Achievements -->
+    <li><a href="achievements.html" id="menuAchievements"><i class="fas fa-trophy"></i> Achievements</a></li>
+    <!-- 4. Languages -->
+    <li><a href="languages.html" id="menuLanguages"><i class="fas fa-globe"></i> Languages</a></li>
+    <!-- 5. Settings -->
     <li><a href="settings.html" id="menuSettings"><i class="fas fa-cog"></i> Settings</a></li>
-    <li><a href="#" class="logout" id="menuLogout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    <!-- 6. Logout (at bottom) -->
+    <li class="logout-item"><a href="#" class="logout" id="menuLogout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
   </ul>
 </div>
 
@@ -173,7 +180,7 @@
           </video>
           <!-- Speech Bubble -->
           <div class="speech-bubble" id="speechBubble">
-            <span class="speech-text" id="speechText">Hello, my friend! I am Catto! </span>
+            <span class="speech-text" id="speechText">Hello, my friend! I am Catto!</span>
           </div>
         </div>
       </div>
@@ -181,7 +188,7 @@
   </section>
 
   <!-- ============================================
-     WHY LEARN WITH CATTO?
+     WHY LEARN WITH CATTO? - CONSISTENT 4 CARDS
      ============================================ -->
   <section class="section-container">
     <h2 class="section-title">Why Learn With Catto?</h2>
@@ -204,7 +211,7 @@
   </section>
 
   <!-- ============================================
-     WHAT YOU'LL LEARN
+     WHAT YOU'LL LEARN - CONSISTENT 4 COLUMN
      ============================================ -->
   <section class="section-container topics-section">
     <h2 class="section-title">What You'll Learn</h2>
@@ -258,7 +265,7 @@
   </section>
 
   <!-- ============================================
-     SAFE FOR KIDS
+     SAFE FOR KIDS - CONSISTENT 4 CARDS
      ============================================ -->
   <section class="section-container parent-section">
     <h2 class="section-title">Safe for Kids</h2>
@@ -282,7 +289,7 @@
 </main>
 
 <!-- ============================================
-   MODALS
+   LOGIN REQUIRED MODAL
    ============================================ -->
 <div class="modal-backdrop" id="loginRequiredModal">
   <div class="modal-card login-required-modal">
@@ -305,6 +312,9 @@
   </div>
 </div>
 
+<!-- ============================================
+   LANGUAGE SELECTION MODAL
+   ============================================ -->
 <div class="modal-backdrop" id="languageModal">
   <div class="modal-card language-selection-modal">
     <button class="modal-close interactive" id="languageModalClose" aria-label="Close">
@@ -313,7 +323,7 @@
     <h2 class="modal-title">🌍 Choose Your Language</h2>
     <p class="modal-subtitle">Select the language you'd like to learn today!</p>
     <div class="language-grid-modal" id="languageGridModal">
-      <!-- Generated by JavaScript -->
+      <!-- Languages will be generated by JavaScript -->
     </div>
   </div>
 </div>
@@ -325,35 +335,11 @@
 </div>
 
 <!-- =========================================================
-   SCRIPTS
+   SCRIPTS - Load in correct order
    ========================================================= -->
+<script src="assets/js/auth.js"></script>
 <script src="assets/js/sounds.js"></script>
-<script src="assets/js/auth.js"></script> 
+<script src="assets/js/header.js"></script>
 <script src="assets/js/home.js"></script>
-
-<script>
-  // Connect Header to Database
-  document.addEventListener('DOMContentLoaded', () => {
-    fetch('Backend/get_profile.php') 
-      .then(res => res.json())
-      .then(data => {
-        if(data.success) {
-          const coinDisplay = document.getElementById('headerCoins');
-          const streakDisplay = document.getElementById('headerStars');
-          
-          if(coinDisplay && data.data.star_shells !== undefined) {
-              coinDisplay.innerText = data.data.star_shells;
-              coinDisplay.parentElement.style.display = 'flex'; // Unhide pill
-          }
-          
-          if(streakDisplay && data.data.daily_streak !== undefined) {
-              streakDisplay.innerText = data.data.daily_streak;
-              streakDisplay.parentElement.style.display = 'flex'; // Unhide pill
-          }
-        }
-      })
-      .catch(err => console.error("Database connection issue on Home page:", err));
-  });
-</script>
 </body>
 </html>

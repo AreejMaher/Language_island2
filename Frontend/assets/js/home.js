@@ -1,11 +1,11 @@
 /* =========================================================
-   HOME.JS - Merged UI and Media Functionality
+   HOME.JS - Merged UI and Media Functionality (DB-Driven)
    ========================================================= */
 
 document.addEventListener('DOMContentLoaded', function() {
 
   // ============================================
-  // LANGUAGE DATA - MEDIA CONFIGURATION
+  // LANGUAGE DATA - COMPLETE CONFIGURATION
   // ============================================
   const languages = {
     en: { 
@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
       path: 'english', 
       video: 'imgs/Catto_Videos/Catto_English.webm',
       greeting: 'Hello my friend! I am Catto! 🐱',
+      shortGreeting: 'Hello!',
       sound: 'Sounds/Hello.mp3'
     },
     fr: { 
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
       path: 'french', 
       video: 'imgs/Catto_Videos/Catto_French.webm',
       greeting: 'Bonjour mon ami! Je suis Catto! 🐱',
+      shortGreeting: 'Bonjour!',
       sound: 'Sounds/Bonjour mon ami, je suis Catto.mp3'
     },
     es: { 
@@ -33,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
       path: 'spanish', 
       video: 'imgs/Catto_Videos/Catto_Spain.webm',
       greeting: '¡Hola amigo! Soy Catto! 🐱',
+      shortGreeting: '¡Hola!',
       sound: 'Sounds/Hola.mp3'
     },
     it: { 
@@ -42,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
       path: 'italian', 
       video: 'imgs/Catto_Videos/Catto_Italy.webm',
       greeting: 'Ciao amico! Sono Catto! 🐱',
+      shortGreeting: 'Ciao!',
       sound: 'Sounds/Ciao.mp3'
     },
     de: { 
@@ -51,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
       path: 'german', 
       video: 'imgs/Catto_Videos/Catto_German.webm',
       greeting: 'Hallo mein Freund! Ich bin Catto! 🐱',
+      shortGreeting: 'Hallo!',
       sound: 'Sounds/Hallo.mp3'
     },
     ar: { 
@@ -60,162 +65,237 @@ document.addEventListener('DOMContentLoaded', function() {
       path: 'arabic', 
       video: 'imgs/Catto_Videos/Catto_Egypt.webm',
       greeting: 'مرحباً يا صديقي! أنا كاتو! 🐱',
+      shortGreeting: 'مرحباً!',
       sound: 'Sounds/مرحبا صديقي.wav'
     }
   };
 
+  // ============================================
+  // STATE MANAGEMENT
+  // ============================================
   const state = {
     currentLang: 'en',
     isPlaying: false,
     currentAudio: null,
+    currentVideo: null,
     messageTimeout: null
   };
 
   // ============================================
-  // MEDIA CONTROL FUNCTIONS
+  // DOM ELEMENTS
   // ============================================
+  const langNavBtns = document.querySelectorAll('.lang-nav-btn');
   const catVideo = document.getElementById('catVideo');
   const speechBubble = document.getElementById('speechBubble');
   const speechText = document.getElementById('speechText');
-  const langNavBtns = document.querySelectorAll('.lang-nav-btn');
 
-  function stopAllMedia() {
+  // ============================================
+  // MEDIA CONTROL FUNCTIONS
+  // ============================================
+  
+  function stopVideo() {
     if (catVideo) {
       catVideo.pause();
       catVideo.currentTime = 0;
+      catVideo.src = '';
+      catVideo.load();
     }
+  }
+
+  function stopAudio() {
     if (state.currentAudio) {
       state.currentAudio.pause();
       state.currentAudio.currentTime = 0;
       state.currentAudio = null;
     }
+  }
+
+  function stopAllMedia() {
+    stopVideo();
+    stopAudio();
+    
     if (state.messageTimeout) {
       clearTimeout(state.messageTimeout);
       state.messageTimeout = null;
     }
+    
     if (speechBubble) {
       speechBubble.classList.remove('show');
     }
+    
     state.isPlaying = false;
   }
 
-  function playGreeting(langKey) {
+  function playGreetingSound(langKey) {
     const lang = languages[langKey];
-    if (!lang) return;
+    if (!lang || !lang.sound) return;
     
-    stopAllMedia();
-    state.currentLang = langKey;
-    state.isPlaying = true;
-
-    // 1. Play Video
-    if (catVideo && lang.video) {
-      catVideo.src = lang.video;
-      catVideo.load();
-      catVideo.play().catch(e => console.log('Video autoplay blocked:', e));
+    stopAudio();
+    
+    try {
+      const audio = new Audio(lang.sound);
+      audio.volume = 0.8;
+      state.currentAudio = audio;
       
-      catVideo.classList.remove('talking');
-      void catVideo.offsetWidth; // Trigger reflow
-      catVideo.classList.add('talking');
-    }
-
-    // 2. Play Audio
-    if (lang.sound) {
-      try {
-        const audio = new Audio(lang.sound);
-        audio.volume = 0.8;
-        state.currentAudio = audio;
-        audio.play().catch(e => console.log('Sound play failed:', e));
-      } catch(e) { console.log('Audio error:', e); }
-    }
-
-    // 3. Show Speech Bubble
-    if (speechText && speechBubble) {
-      speechText.textContent = lang.greeting;
-      speechText.style.color = lang.color;
-      speechBubble.style.borderColor = lang.color;
-      speechBubble.classList.add('show');
-      
-      state.messageTimeout = setTimeout(() => {
-        speechBubble.classList.remove('show');
-        state.isPlaying = false;
-      }, 5000);
+      audio.play().catch(e => {
+        console.log('Sound play failed:', e);
+        state.currentAudio = null;
+      });
+    } catch(e) {
+      console.log('Audio error:', e);
     }
   }
 
-  // Language Navbar Listeners
-  langNavBtns.forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const lang = this.dataset.lang;
-      
-      if (lang === state.currentLang && state.isPlaying) return;
-      
-      langNavBtns.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      playGreeting(lang);
+  function playGreetingVideo(langKey) {
+    const lang = languages[langKey];
+    if (!lang || !lang.video) return;
+    
+    stopVideo();
+    
+    if (!catVideo) return;
+    
+    catVideo.src = lang.video;
+    catVideo.load();
+    
+    catVideo.play().catch(e => {
+      console.log('Video autoplay blocked:', e);
+      setTimeout(() => catVideo.play().catch(() => {}), 300);
     });
-  });
+    
+    catVideo.classList.remove('talking');
+    void catVideo.offsetWidth;
+    catVideo.classList.add('talking');
+  }
 
-  // Random Greeting on Catto Click
+  function showGreetingMessage(langKey) {
+    const lang = languages[langKey];
+    if (!lang) return;
+    
+    if (state.messageTimeout) {
+      clearTimeout(state.messageTimeout);
+      state.messageTimeout = null;
+    }
+    
+    if (speechText) {
+      speechText.textContent = lang.greeting;
+      speechText.style.color = lang.color;
+    }
+    
+    if (speechBubble) {
+      speechBubble.style.borderColor = lang.color;
+      speechBubble.classList.add('show');
+    }
+    
+    state.messageTimeout = setTimeout(() => {
+      if (speechBubble) speechBubble.classList.remove('show');
+      state.messageTimeout = null;
+    }, 5000);
+  }
+
+  function switchLanguage(langKey) {
+    if (langKey === state.currentLang && state.isPlaying) return;
+    
+    stopAllMedia();
+    
+    state.currentLang = langKey;
+    state.isPlaying = true;
+    
+    playGreetingVideo(langKey);
+    playGreetingSound(langKey);
+    showGreetingMessage(langKey);
+    
+    setTimeout(() => {
+      state.isPlaying = false;
+    }, 6000);
+  }
+
+  // ============================================
+  // TOAST NOTIFICATIONS
+  // ============================================
+  window.showToast = function(message, isSuccess) {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    if (toast && toastMessage) {
+      toastMessage.textContent = message;
+      toast.classList.add('show');
+      
+      if (isSuccess) {
+        toast.style.background = '#58C27D';
+      } else {
+        toast.style.background = '#2E2657';
+      }
+      
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+        toast.style.background = '';
+      }, 2500);
+    }
+  };
+
+  // ============================================
+  // EVENT LISTENERS: NAVBAR & CATTO
+  // ============================================
+  if (langNavBtns.length > 0) {
+    langNavBtns.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const lang = this.dataset.lang;
+        
+        langNavBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        switchLanguage(lang);
+      });
+      
+      btn.addEventListener('mouseenter', () => {
+        if (typeof Sound !== 'undefined') Sound.hover();
+      });
+    });
+  }
+
   if (catVideo) {
     catVideo.addEventListener('click', () => {
       const langKeys = Object.keys(languages);
       const randomLang = langKeys[Math.floor(Math.random() * langKeys.length)];
       
       langNavBtns.forEach(b => {
-        b.classList.toggle('active', b.dataset.lang === randomLang);
+        b.classList.remove('active');
+        if (b.dataset.lang === randomLang) b.classList.add('active');
       });
-      playGreeting(randomLang);
+      
+      switchLanguage(randomLang);
+      
       if (typeof Sound !== 'undefined') Sound.pop();
     });
   }
 
-  // Initial Auto-Play Greeting
+  // Auto-play the first language (English) on load
   setTimeout(() => {
     const activeBtn = document.querySelector('.lang-nav-btn.active');
-    playGreeting(activeBtn ? activeBtn.dataset.lang : 'en');
+    const lang = activeBtn ? activeBtn.dataset.lang : 'en';
+    const langData = languages[lang];
+    
+    if (langData && speechText) {
+      speechText.textContent = langData.greeting;
+      speechText.style.color = langData.color;
+    }
+    if (speechBubble) {
+      speechBubble.style.borderColor = langData.color;
+      speechBubble.classList.add('show');
+    }
+    
+    state.messageTimeout = setTimeout(() => {
+      if (speechBubble) speechBubble.classList.remove('show');
+      state.messageTimeout = null;
+    }, 5000);
+    
+    if (catVideo && langData) {
+      catVideo.src = langData.video;
+      catVideo.load();
+      catVideo.play().catch(() => {});
+    }
   }, 800);
-
-
-  // ============================================
-  // SIDEBAR & UI FUNCTIONALITY
-  // ============================================
-  const menuToggle = document.getElementById('menuToggle');
-  const sidebar = document.getElementById('sidebar');
-  const sidebarOverlay = document.getElementById('sidebarOverlay');
-  const sidebarClose = document.getElementById('sidebarClose');
-
-  function closeSidebar() {
-    if(sidebar) sidebar.classList.remove('open');
-    if(sidebarOverlay) sidebarOverlay.classList.remove('active');
-  }
-
-  if (menuToggle) {
-    menuToggle.addEventListener('click', () => {
-      if (sidebar.classList.contains('open')) {
-        closeSidebar();
-      } else {
-        sidebar.classList.add('open');
-        if(sidebarOverlay) sidebarOverlay.classList.add('active');
-      }
-    });
-  }
-
-  if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
-  if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
-
-  // Logout Logic safely tied to PHP Auth system
-  const logoutBtn = document.getElementById('menuLogout');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (confirm('Are you sure you want to logout?')) {
-        closeSidebar();
-        if(typeof Auth !== 'undefined') Auth.logout(); 
-      }
-    });
-  }
-
 
   // ============================================
   // MODALS & BUTTON ROUTING
@@ -237,15 +317,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Populate Language Modal Grid dynamically
-  function setupLanguageModal() {
+  window.showLoginRequiredModal = function() {
+    openModal('loginRequiredModal');
+  };
+
+  window.showLanguageSelectionModal = function() {
     const grid = document.getElementById('languageGridModal');
     if (!grid) return;
     
     const langImages = {
-      ar: 'imgs/buttons/arabic.png', en: 'imgs/buttons/English.png',
-      fr: 'imgs/buttons/French.png', de: 'imgs/buttons/GermanCatto.png',
-      it: 'imgs/buttons/Italy.png', es: 'imgs/buttons/Spain.png'
+      ar: 'imgs/buttons/arabic.png',
+      en: 'imgs/buttons/English.png',
+      fr: 'imgs/buttons/French.png',
+      de: 'imgs/buttons/GermanCatto.png',
+      it: 'imgs/buttons/Italy.png',
+      es: 'imgs/buttons/Spain.png'
     };
     
     let html = '';
@@ -263,23 +349,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     grid.querySelectorAll('.lang-image-btn').forEach(btn => {
       btn.addEventListener('click', function() {
-        const lang = languages[this.dataset.lang];
+        const langKey = this.dataset.lang;
+        const lang = languages[langKey];
         if (typeof Sound !== 'undefined') Sound.pop();
+        closeModal('languageModal');
         window.location.href = 'language/' + lang.path + '.html';
       });
     });
-  }
-  setupLanguageModal();
+    
+    openModal('languageModal');
+  };
 
-  // Central Router for "Start" and "Meet Catto" buttons
+  // Main Action Router (DB Driven Auth Check)
   function handleMainAction(e) {
     e.preventDefault();
     if (typeof Sound !== 'undefined') Sound.pop();
     
-    if (typeof Auth !== 'undefined' && Auth.isLoggedIn()) {
-      openModal('languageModal');
+    if (window.isUserLoggedIn && window.isUserLoggedIn()) {
+      window.showLanguageSelectionModal();
     } else {
-      openModal('loginRequiredModal');
+      window.showLoginRequiredModal();
     }
   }
 
@@ -298,29 +387,47 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // ============================================
-  // GLOBAL TOAST FUNCTION
-  // ============================================
-  window.showToast = function(message) {
-    const toast = document.getElementById('toast');
-    const toastMessage = document.getElementById('toastMessage');
-    if (toast && toastMessage) {
-      toastMessage.textContent = message;
-      toast.classList.add('show');
-      clearTimeout(window.toastTimer);
-      window.toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+      document.body.style.overflow = '';
     }
-  };
+  });
 
-  // Check recent Sign-In statuses
+  // ============================================
+  // CHECK IF USER JUST SIGNED IN
+  // ============================================
   if (sessionStorage.getItem('justSignedIn') === 'true') {
     sessionStorage.removeItem('justSignedIn');
-    setTimeout(() => { if (Auth.isLoggedIn()) { showToast('👋 Welcome back!'); openModal('languageModal'); }}, 300);
+    setTimeout(() => {
+      if (window.isUserLoggedIn && window.isUserLoggedIn()) {
+        showToast('👋 Welcome back!', true);
+        window.showLanguageSelectionModal();
+      }
+    }, 500); // 500ms allows header.js enough time to finish the DB fetch
   }
+
   if (sessionStorage.getItem('justSignedUp') === 'true') {
     sessionStorage.removeItem('justSignedUp');
-    setTimeout(() => { if (Auth.isLoggedIn()) { showToast('🎉 Welcome to Language Island!'); openModal('languageModal'); }}, 300);
+    setTimeout(() => {
+      if (window.isUserLoggedIn && window.isUserLoggedIn()) {
+        showToast('🎉 Welcome to Language Island!', true);
+        window.showLanguageSelectionModal();
+      }
+    }, 500);
   }
+
+  // ============================================
+  // SOUND SYSTEM
+  // ============================================
+  if (typeof Sound !== 'undefined') {
+    Sound._enabled = true;
+    setTimeout(() => Sound._init(), 200);
+  }
+
+  // Expose global methods
+  window.switchLanguage = switchLanguage;
+  window.stopAllMedia = stopAllMedia;
 
   console.log('✅ Home page merged securely with PHP backend!');
 });
