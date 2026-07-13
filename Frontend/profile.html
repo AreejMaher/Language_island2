@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile — Language Island</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/home.css">
+    <link rel="stylesheet" href="assets/css/pages.css">
+    <link rel="stylesheet" href="assets/css/profile.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="topbar-top">
+        <div class="brand">
+            <a href="index.html">
+                <img src="imgs/Cattoimages/cattologo.png" class="brand-logo" alt="Language Island Logo">
+            </a>
+        </div>
+        <div class="topbar-right"></div>
+    </div>
+</header>
+
+<main class="page-main">
+    <section class="page-hero">
+        <h1>My Passport</h1>
+    </section>
+
+    <!-- ===== PASSPORT CARD ===== -->
+    <section class="passport-hero">
+        <div class="passport-card bounce-in">
+
+            <!-- LEFT COLUMN: Avatar + Name + ID -->
+            <div class="passport-left">
+                <div class="avatar-container">
+                    <img id="cattoAvatar" src="imgs/Cattoimages/default-catto.png" alt="Catto">
+                    <button id="openClosetBtn" class="edit-avatar-btn" type="button" aria-label="Change outfit">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                </div>
+                <div class="user-info">
+                    <h2 class="user-name" id="userName">Explorer</h2>
+                    <span class="user-id" id="displayUserId">#000</span>
+                </div>
+                <span class="passport-hint">Tap the pencil to open your closet</span>
+            </div>
+
+            <!-- RIGHT COLUMN: Account Details -->
+            <div class="passport-right">
+                <div class="details-header">
+                    <span class="passport-eyebrow">Account Details</span>
+                    <button id="editProfileBtn" class="edit-profile-btn" type="button">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </button>
+                </div>
+
+                <div id="profileMessage"></div>
+
+                <!-- Display mode - USING FONT AWESOME ICONS -->
+                <div id="profileDisplayMode">
+                    <div class="passport-row">
+                        <span class="row-label">
+                            <i class="fas fa-user row-icon"></i>
+                            Full Name
+                        </span>
+                        <span class="row-value" id="displayFullName">Loading...</span>
+                    </div>
+                    <div class="passport-row">
+                        <span class="row-label">
+                            <i class="fas fa-envelope row-icon"></i>
+                            Email
+                        </span>
+                        <span class="row-value" id="displayEmail">Loading...</span>
+                    </div>
+                    <div class="passport-row">
+                        <span class="row-label">
+                            <i class="fas fa-venus-mars row-icon"></i>
+                            Gender
+                        </span>
+                        <span class="row-value" id="displayGender">Loading...</span>
+                    </div>
+                    <div class="passport-row">
+                        <span class="row-label">
+                            <i class="fas fa-calendar row-icon"></i>
+                            Date of Birth
+                        </span>
+                        <span class="row-value" id="displayDob">Loading...</span>
+                    </div>
+                    <div class="passport-row">
+                        <span class="row-label">
+                            <i class="fas fa-birthday-cake row-icon"></i>
+                            Age
+                        </span>
+                        <span class="row-value" id="displayAge">Loading...</span>
+                    </div>
+                    <div class="passport-row">
+                        <span class="row-label">
+                            <i class="fas fa-calendar-plus row-icon"></i>
+                            Member Since
+                        </span>
+                        <span class="row-value" id="displayMemberSince">Loading...</span>
+                    </div>
+                </div>
+
+                <!-- Edit mode -->
+                <div id="profileEditMode" style="display:none;">
+                    <div class="field-group">
+                        <label class="field-label" for="editFirstName">First Name</label>
+                        <input type="text" id="editFirstName" class="field-input" maxlength="50" placeholder="Enter your first name">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label" for="editLastName">Last Name</label>
+                        <input type="text" id="editLastName" class="field-input" maxlength="50" placeholder="Enter your last name">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label" for="editEmail">Email</label>
+                        <input type="email" id="editEmail" class="field-input" maxlength="100" placeholder="Enter your email">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label" for="editGender">Gender</label>
+                        <select id="editGender" class="field-input">
+                            <option value="girl">Girl</option>
+                            <option value="boy">Boy</option>
+                            <option value="prefer-not">Prefer not to say</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label" for="editDob">Date of Birth</label>
+                        <input type="date" id="editDob" class="field-input">
+                    </div>
+                    <div class="edit-actions">
+                        <button id="saveProfileBtn" class="save-profile-btn" type="button">
+                            <i class="fa-solid fa-floppy-disk"></i> Save Changes
+                        </button>
+                        <button id="cancelProfileBtn" class="cancel-profile-btn" type="button">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== MY ADVENTURE STATS ===== -->
+    <section class="stats-section">
+        <h2 class="section-title">My Adventure Stats</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <img src="imgs/icons/streak-icon.png" alt="Streak" class="stat-icon-img" onerror="this.style.display='none'">
+                <span class="stat-number" id="statStreak">0</span>
+                <span class="stat-label">Day Streak</span>
+            </div>
+            <div class="stat-card">
+                <img src="imgs/icons/score-icon.png" alt="Score" class="stat-icon-img" onerror="this.style.display='none'">
+                <span class="stat-number" id="statXP">0</span>
+                <span class="stat-label">Score</span>
+            </div>
+            <div class="stat-card">
+                <img src="imgs/icons/shells-icon.png" alt="Star Shells" class="stat-icon-img" onerror="this.style.display='none'">
+                <span class="stat-number" id="statShells">0</span>
+                <span class="stat-label">Star Shells</span>
+            </div>
+            <div class="stat-card">
+                <img src="imgs/icons/level-icon.png" alt="Level" class="stat-icon-img" onerror="this.style.display='none'">
+                <span class="stat-number" id="statLevel">1</span>
+                <span class="stat-label">Level</span>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- ===== CLOSET MODAL ===== -->
+<div id="closetModal" class="modal-overlay">
+    <div class="modal-content">
+        <h2>My Closet</h2>
+        <p>Select an outfit for Catto!</p>
+        <div id="skinGrid" class="skin-grid">
+            <!-- Skins will be loaded here dynamically -->
+        </div>
+        <button id="closeClosetBtn" class="close-modal">Close</button>
+    </div>
+</div>
+
+<!-- ===== LOGIN REQUIRED MODAL ===== -->
+<div class="modal-backdrop" id="loginRequiredModal">
+    <div class="modal-card login-required-modal">
+        <button class="modal-close interactive" id="loginModalClose" aria-label="Close">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-catto-image">
+            <img src="imgs/Cattoimages/Catto_Login.png" alt="Catto" onerror="this.style.display='none'">
+        </div>
+        <h2 class="modal-title">Sign In Required</h2>
+        <p class="modal-subtitle">Please sign in or create an account to start learning!</p>
+        <div class="modal-actions">
+            <a href="signin.html" class="cta-btn interactive" id="loginModalSignin">
+                Sign In <i class="fas fa-arrow-right"></i>
+            </a>
+            <a href="signup.html" class="cta-btn secondary interactive" id="loginModalSignup">
+                Create Account <i class="fas fa-user-plus"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast">
+    <span class="toast-icon"><i class="fas fa-check-circle"></i></span>
+    <span id="toastMessage">Welcome!</span>
+</div>
+
+<!-- =========================================================
+   SCRIPTS
+   ========================================================= -->
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/sounds.js"></script>
+<script src="assets/js/interactive.js"></script>
+<script src="assets/js/global-theme.js"></script>
+<script src="assets/js/avatar-system.js"></script>
+<script src="assets/js/profile.js"></script>
+
+</body>
+</html>

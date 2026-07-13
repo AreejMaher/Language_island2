@@ -1,0 +1,389 @@
+/* =========================================================
+   SHOP.CSS — Unified Shop Page Styles
+   ========================================================= */
+
+/* ---------- Hero ---------- */
+.page-hero {
+  text-align: center;
+  padding: 30px clamp(20px, 5vw, 60px) 10px;
+}
+.page-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 48px);
+  color: var(--plum);
+  margin: 0 0 8px;
+}
+.page-hero p {
+  font-size: 18px;
+  color: var(--plum-soft);
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+/* ---------- Coin Burst Animation ---------- */
+.coin-burst {
+  position: absolute;
+  font-size: 28px;
+  pointer-events: none;
+  animation: floatUpAndFade 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  z-index: 1000;
+}
+
+@keyframes floatUpAndFade {
+  0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+  20% { transform: translate(var(--x-dir), -30px) scale(1.2); opacity: 1; }
+  100% { transform: translate(var(--x-dir), -100px) scale(1); opacity: 0; }
+}
+
+/* ---------- Coin Balance ---------- */
+.coin-balance {
+  padding: 10px clamp(20px, 5vw, 60px) 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.balance-card {
+  background: linear-gradient(135deg, var(--white), #FFF8EC);
+  border-radius: 24px;
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 8px 0 rgba(46,38,87,0.08), 0 8px 24px rgba(0,0,0,0.06);
+  border: 2px solid var(--star);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.balance-icon {
+  font-size: 40px;
+}
+
+.balance-info {
+  flex: 1;
+}
+
+.balance-label {
+  font-size: 14px;
+  color: var(--plum-soft);
+  font-weight: 600;
+  display: block;
+}
+
+.balance-amount {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--coral-dark);
+}
+
+.balance-stars {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--star);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #FFFBEA;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 2px solid var(--star);
+}
+
+/* ---------- Shop Grid ---------- */
+.shop-grid,
+.my-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 20px 20px 60px;
+  max-width: 1000px;
+  margin: 0 auto;
+  justify-content: center; /* Keeps them centered if there's extra space */
+}
+
+/* ---------- Shop Cards ---------- */
+.shop-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 8px 0 rgba(46,38,87,0.06);
+  border: 3px solid #F1EEFB;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  max-width: 320px; /* Caps the card width so it matches the other section */
+  margin: 0 auto;   /* Centers the card in its grid slot */
+  width: 100%;
+}
+
+.shop-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 14px 0 rgba(46,38,87,0.08), 0 0 30px rgba(255,210,63,0.15);
+  border-color: var(--star);
+}
+
+.shop-card.print-card {
+  border-color: #E3DFF5;
+  background: #FBFAFF;
+}
+
+.shop-icon {
+  font-size: 50px;
+  margin-bottom: 12px;
+  animation: floatElement 6s ease-in-out infinite;
+  display: block;
+}
+
+.shop-card h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--plum);
+  margin: 0 0 8px;
+}
+
+.shop-card p {
+  font-size: 14px;
+  color: var(--plum-soft);
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 20px;
+  flex-grow: 1;
+}
+
+/* ============================================
+   SECTION HEADERS
+   ============================================ */
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 36px); /* Scales smoothly on mobile */
+  color: var(--plum); /* Deep purple for strong contrast */
+  text-align: center;
+  margin: 0 0 8px;
+  position: relative;
+}
+
+.section-subtitle {
+  font-size: 18px;
+  color: var(--plum-soft); /* Softer purple to establish visual hierarchy */
+  font-weight: 700;
+  text-align: center;
+  margin: 0 auto 32px;
+  max-width: 600px; /* Keeps the text from stretching too wide on desktop */
+  line-height: 1.4;
+}
+
+/* ---------- Buy Buttons ---------- */
+.buy-btn {
+  background: var(--star);
+  color: var(--plum);
+  border: none;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 rgba(220, 175, 20, 1);
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.buy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(220, 175, 20, 1);
+  filter: brightness(1.05);
+}
+
+.buy-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 rgba(220, 175, 20, 1);
+}
+
+.buy-btn.purchased {
+  background: var(--grass);
+  color: var(--white);
+  box-shadow: 0 4px 0 #3b9c5a;
+  cursor: default;
+}
+
+/* Special Styling for Equip Button States */
+.buy-btn.equip-btn {
+  background: var(--coral);
+  color: #ffffff;
+  box-shadow: 0 5px 0 var(--coral-dark);
+}
+
+.buy-btn.equip-btn:hover {
+  background: #ff8a75;
+  box-shadow: 0 8px 0 var(--coral-dark);
+}
+
+.buy-btn.equip-btn:active {
+  box-shadow: 0 2px 0 var(--coral-dark);
+}
+
+/* ============================================
+   ROYAL PURPLE THEME OVERRIDE
+   ============================================ */
+body.theme-royal-purple {
+  --plum: #4A154B;        
+  --plum-soft: #7A5C7A;   
+  --coral: #9D8DF1;       
+  --coral-dark: #7A69D1;  
+  --star: #E3DFF5;        
+  --grass: #B9B3D9;       
+}
+
+body.theme-royal-purple .sky {
+  background: linear-gradient(180deg, #EAE5F9 0%, #F5F3FC 100%);
+}
+
+/* ---------- Dynamic Elements (Modals & JS States) ---------- */
+.purchase-modal .modal-card {
+  max-width: 400px;
+  padding: 34px 28px 28px;
+  text-align: center;
+}
+
+.purchase-icon {
+  font-size: 56px;
+  margin-bottom: 8px;
+}
+
+.purchase-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--plum);
+  margin: 0 0 4px;
+}
+
+.purchase-text {
+  color: var(--plum-soft);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+
+.purchase-details {
+  background: #F9F7FC;
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.purchase-details .pd-icon {
+  font-size: 32px;
+}
+
+.purchase-details .pd-info {
+  text-align: left;
+}
+
+.purchase-details .pd-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--plum);
+}
+
+.purchase-details .pd-price {
+  font-size: 14px;
+  color: var(--coral-dark);
+  font-weight: 700;
+}
+
+.purchase-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.purchase-actions .cta-btn {
+  font-size: 15px;
+  padding: 12px 28px;
+  min-width: 120px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: var(--coral);
+  color: #fff;
+  box-shadow: 0 5px 0 var(--coral-dark);
+}
+
+.purchase-actions .cta-btn.secondary {
+  background: #F1EEFB;
+  color: var(--plum);
+  box-shadow: 0 5px 0 rgba(46,38,87,0.08);
+}
+
+.purchase-actions .cta-btn.secondary:hover,
+.purchase-actions .cta-btn:hover {
+  transform: translateY(-2px);
+}
+
+.purchase-actions .cta-btn:active {
+  transform: translateY(3px);
+}
+
+/* ---------- Responsive Adjustments ---------- */
+@media (max-width: 768px) {
+  .balance-card {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    padding: 16px 20px;
+  }
+  .balance-info {
+    text-align: center;
+  }
+  .balance-amount {
+    font-size: 28px;
+  }
+  .purchase-actions {
+    flex-direction: column;
+  }
+  .purchase-actions .cta-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .shop-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .shop-icon {
+    font-size: 40px;
+  }
+  .shop-card h3 {
+    font-size: 18px;
+  }
+  .balance-card {
+    padding: 14px 16px;
+    border-radius: 18px;
+  }
+  .balance-amount {
+    font-size: 24px;
+  }
+  .balance-stars {
+    font-size: 18px;
+    padding: 4px 12px;
+  }
+  .purchase-modal .modal-card {
+    padding: 24px 16px 20px;
+  }
+  .purchase-title {
+    font-size: 20px;
+  }
+}
